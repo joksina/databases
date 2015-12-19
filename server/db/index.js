@@ -9,6 +9,7 @@ var User = sequelize.define('User', {
 });
 
 var Messages = sequelize.define('Messages', {
+  userid: Sequelize.INTEGER,
   text: Sequelize.STRING,
   roomname: Sequelize.STRING
 });
@@ -52,4 +53,4 @@ Messages.sync();
 //     });
 //     dbConnection.connect();
 
-    module.exports = dbConnection;
+    // module.exports = dbConnection;
