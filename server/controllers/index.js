@@ -1,43 +1,45 @@
 var models = require('../models');
 var promise = require('bluebird');
 
-var messages = [{
-
-  text:"Hello World",
-  username:"Hridhya",
-  objectId: 1
-
-}];
 module.exports = {
 
   messages: {
 
     get: function (req, res) {
-      console.log("In get");
-      models.messages.get(){
+      models.messages.get(function(err, results){
         if(err){
-        console.log(err);
+          throw err;
         } else {
-          res.JSON(messages);
+          res.JSON(results);
         }
       });
     }, // a function which handles a get request for all messages
     post: function (req, res) {
-      // var data = [req.body.username, req.body.message, req.body.roomname];
-      // models.messages.post(function(err, results){
-      //   if(err) {
-      //     console.log(err);
-      //   } else {
-      //     res.JSON(results);
-      //   }
-      // })
+      var data = [req.body.username, req.body.message, req.body.roomname];
+      models.messages.post(data, function(err, results){
+        if(err) {
+          console.log(err);
+        } else {
+          res.JSON(results);
+        }
+      });
     } // a function which handles posting a message to the database
   },
 
   users: {
     // Ditto as above
-    get: function (req, res) {},
-    post: function (req, res) {}
+    get: function (req, res) {
+      models.users.get(function(err, results){
+        if (err) { throw err; }
+        res.JSON(results);
+      });
+    },
+    post: function (req, res) {
+      var data = [req.body.username];
+      models.users.post(data, function(err, results){
+        res.JSON(results);
+      });
+    }
   }
 };
 
