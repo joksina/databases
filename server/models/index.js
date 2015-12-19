@@ -1,22 +1,24 @@
 var db = require('../db');
 var mysql = require('mysql');
 //connection.connect()
+// db.connect();
 
 module.exports = {
   messages: {
     get: function (cb) {
-      db.query('SELECT * messages.id, messages.text, messages.roomname, \
-      users.username LEFT OUTER JOIN users ON (messages.userid = user.id) \
-        ORDER BY messages.id desc', function(err, results){
+      db.query('SELECT messages.id, messages.texts, messages.roomname, users.username \
+                  from messages  \
+                INNER JOIN users ON messages.userid = users.id', 
+        function(err, results){
           if (err) {
-            console.log(cb(err));
+            throw err;
           }else {
-            console.log(cb(results));
+            cb(results);
           }
       });
     }, // a function which produces all the messages
     post: function (req, cb) {
-      db.query('INSERT iINTO MESSAGES(text, userid, roomname) / values (?, (SELECT ID FROM USERS WHERE USERNAME = ? limit 1), ?)', function(err, body){
+      db.query('INSERT INTO MESSAGES(text, userid, roomname) / values (?, (SELECT ID FROM USERS WHERE USERNAME = ? limit 1), ?)', req, function(err, body){
         if (err) {
           cb(err);
         }else {
@@ -33,12 +35,13 @@ module.exports = {
         if(err) {
           throw err;
         } else {
+          console.log('result:', results);
           cb(results);
         }
       });
     },
     post: function (req, cb) {
-      db.query('INSERT INTO users(username) VALUES(?);', function(err, body){
+      db.query('INSERT INTO users(username) VALUES(?);', req, function(err, body){
           if(err) {
             throw err;
           } else {
