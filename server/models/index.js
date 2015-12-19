@@ -18,7 +18,7 @@ module.exports = {
       });
     }, // a function which produces all the messages
     post: function (req, cb) {
-      db.query('INSERT INTO MESSAGES(text, userid, roomname) / values (?, (SELECT ID FROM USERS WHERE USERNAME = ? limit 1), ?)', req, function(err, body){
+      db.query('INSERT INTO messages(texts, username, roomname) / values (?, (SELECT ID FROM USERS WHERE USERNAME = ? limit 1), ?)', req, function(err, body){
         if (err) {
           cb(err);
         }else {
